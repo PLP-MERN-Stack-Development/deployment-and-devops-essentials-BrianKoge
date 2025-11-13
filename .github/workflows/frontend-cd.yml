@@ -1,0 +1,73 @@
+name: Frontend CD
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'client/**'
+      - '.github/workflows/frontend-cd.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+        cache-dependency-path: client/package-lock.json
+
+    - name: Install dependencies
+      working-directory: ./client
+      run: npm ci
+
+    - name: Build application
+      working-directory: ./client
+      env:
+        VITE_SOCKET_URL: ${{ secrets.VITE_SOCKET_URL || 'http://localhost:5000' }}
+        VITE_NODE_ENV: production
+      run: npm run build
+
+    # Deploy to Vercel
+    - name: Deploy to Vercel
+      if: env.VERCEL_TOKEN != ''
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        working-directory: ./client
+        scope: ${{ secrets.VERCEL_ORG_ID }}
+
+    # Deploy to Netlify
+    - name: Deploy to Netlify
+      if: env.NETLIFY_AUTH_TOKEN != ''
+      uses: nwtgck/actions-netlify@v3.0
+      with:
+        publish-dir: './client/dist'
+        production-branch: main
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions"
+        enable-pull-request-comment: false
+        enable-commit-comment: true
+        overwrites-pull-request-comment: true
+      env:
+        NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+      timeout-minutes: 1
+
+    # Deploy to GitHub Pages
+    - name: Deploy to GitHub Pages
+      if: env.GITHUB_TOKEN != ''
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./client/dist
+        cname: ${{ secrets.CUSTOM_DOMAIN || '' }}
+

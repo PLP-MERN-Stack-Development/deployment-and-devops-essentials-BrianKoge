@@ -1,0 +1,21 @@
+# Render Blueprint for Backend Deployment
+# https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: socketio-chat-backend
+    env: node
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: CLIENT_URL
+        sync: false  # Set this in Render dashboard
+      - key: MONGODB_URI
+        sync: false  # Set this in Render dashboard
+    healthCheckPath: /health
+    plan: starter  # Free tier
+
