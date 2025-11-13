@@ -147,7 +147,31 @@ VITE_NODE_ENV=production
 
 ## Frontend Deployment
 
-### Option 1: Vercel
+### Option 1: Render (Static Site)
+
+1. **Create a New Static Site**
+   - Go to [Render Dashboard](https://dashboard.render.com)
+   - Click "New +" → "Static Site"
+   - Connect your GitHub repository
+
+2. **Configure Static Site**
+   - Name: `socketio-chat-frontend`
+   - Build Command: `cd client && npm install && npm run build`
+   - Publish Directory: `client/dist`
+
+3. **Set Environment Variables**
+   - `VITE_SOCKET_URL`: Your backend URL (e.g., `https://socketio-chat-backend.onrender.com`)
+   - `VITE_NODE_ENV`: `production`
+
+4. **Deploy**
+   - Click "Create Static Site"
+   - Render will automatically deploy on every push to main branch
+
+**Note**: For SPA routing, add a redirect rule in Render dashboard:
+- Source: `/*`
+- Destination: `/index.html`
+
+### Option 2: Vercel
 
 1. **Import Project**
    - Go to [Vercel Dashboard](https://vercel.com)

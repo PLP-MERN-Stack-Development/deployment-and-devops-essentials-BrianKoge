@@ -1,7 +1,8 @@
-# Render Blueprint for Backend Deployment
+# Render Blueprint for Full Stack Deployment
 # https://render.com/docs/blueprint-spec
 
 services:
+  # Backend Service
   - type: web
     name: socketio-chat-backend
     env: node
@@ -18,4 +19,20 @@ services:
         sync: false  # Set this in Render dashboard
     healthCheckPath: /health
     plan: starter  # Free tier
+
+  # Frontend Static Site
+  - type: web
+    name: socketio-chat-frontend
+    env: static
+    buildCommand: cd client && npm install && npm run build
+    staticPublishPath: client/dist
+    envVars:
+      - key: VITE_SOCKET_URL
+        sync: false  # Set this in Render dashboard (your backend URL)
+      - key: VITE_NODE_ENV
+        value: production
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
 
