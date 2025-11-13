@@ -6,6 +6,12 @@ import { useEffect, useState } from 'react';
 // Socket.io connection URL
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || 'http://localhost:5000';
 
+// Log the socket URL in development (helps debug CORS issues)
+if (import.meta.env.DEV) {
+  console.log('Socket.io connecting to:', SOCKET_URL);
+  console.log('VITE_SOCKET_URL env var:', import.meta.env.VITE_SOCKET_URL || 'not set (using default)');
+}
+
 // Create socket instance
 export const socket = io(SOCKET_URL, {
   autoConnect: false,

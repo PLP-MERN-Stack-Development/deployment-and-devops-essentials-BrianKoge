@@ -328,12 +328,24 @@ MIT License - see LICENSE file for details
 - [Vite Documentation](https://vitejs.dev)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
+## 🔧 Troubleshooting
+
+### CORS Errors
+
+If you're experiencing CORS errors after deployment, see [CORS_FIX.md](./CORS_FIX.md) for step-by-step instructions to fix environment variable configuration.
+
+Common issues:
+- Frontend connecting to `localhost` instead of production backend
+- Backend CORS not allowing production frontend URL
+- Environment variables not set during build
+
 ## 📞 Support
 
 For deployment issues, refer to:
 1. [DEPLOYMENT.md](./DEPLOYMENT.md) troubleshooting section
-2. Platform-specific documentation
-3. GitHub Issues
+2. [CORS_FIX.md](./CORS_FIX.md) for CORS-related issues
+3. Platform-specific documentation
+4. GitHub Issues
 
 ---
 
