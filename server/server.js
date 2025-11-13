@@ -16,10 +16,18 @@ const connectDB = require('./config/database');
 // Load environment variables
 dotenv.config();
 
-// Connect to MongoDB
-if (process.env.MONGODB_URI) {
-  connectDB();
-}
+// Normalize CLIENT_URL (remove trailing slash)
+const normalizeUrl = (url) => {
+  if (!url) return url;
+  return url.replace(/\/+$/, ''); // Remove trailing slashes
+};
+
+const CLIENT_URL = normalizeUrl(process.env.CLIENT_URL) || 'http://localhost:5173';
+
+// Connect to MongoDB (non-blocking - app will work without it)
+connectDB().catch(err => {
+  console.error('MongoDB connection failed, continuing without database:', err.message);
+});
 
 // Initialize Express app
 const app = express();
@@ -28,7 +36,7 @@ const server = http.createServer(app);
 // Configure CORS for Socket.io
 const io = new Server(server, {
   cors: {
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin: CLIENT_URL,
     methods: ['GET', 'POST'],
     credentials: true,
   },
@@ -47,7 +55,7 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 // CORS middleware
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: CLIENT_URL,
   credentials: true,
 }));
 

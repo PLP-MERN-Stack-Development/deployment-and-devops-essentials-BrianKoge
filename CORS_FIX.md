@@ -2,7 +2,10 @@
 
 ## Problem
 
-The frontend is trying to connect to `http://localhost:5000` instead of the deployed backend, and the backend CORS is configured for `http://localhost:5173` instead of the production frontend URL.
+1. The frontend is trying to connect to `http://localhost:5000` instead of the deployed backend
+2. The backend CORS is configured for `http://localhost:5173` instead of the production frontend URL
+3. **Trailing slash mismatch**: If `CLIENT_URL` has a trailing slash (`https://socket-io-c0jd.onrender.com/`) but the origin doesn't, CORS will fail
+4. **502 Bad Gateway**: If the backend is crashing (often due to MongoDB connection failures), you'll see 502 errors
 
 ## Solution
 
@@ -16,7 +19,10 @@ You need to set environment variables in Render for both services.
    ```
    CLIENT_URL=https://socket-io-c0jd.onrender.com
    ```
+   **Important**: Do NOT include a trailing slash (`/`) at the end!
 4. **Save** and **Redeploy** the service
+
+**Note**: The code now automatically removes trailing slashes, but it's best practice to set it correctly.
 
 ### Step 2: Fix Frontend Socket URL
 
@@ -69,7 +75,18 @@ Then redeploy using the blueprint.
 ### CORS errors persist
 
 - **Cause**: Backend `CLIENT_URL` doesn't match frontend URL
-- **Fix**: Ensure `CLIENT_URL` in backend exactly matches your frontend URL (including `https://`)
+- **Fix**: 
+  - Ensure `CLIENT_URL` in backend exactly matches your frontend URL (including `https://`)
+  - **Remove any trailing slashes** from `CLIENT_URL`
+  - The code now normalizes URLs automatically, but double-check your environment variable
+
+### 502 Bad Gateway errors
+
+- **Cause**: Backend server is crashing (often due to MongoDB connection failure)
+- **Fix**: 
+  - Check Render backend logs for error messages
+  - If you see MongoDB connection errors, see [MONGODB_FIX.md](./MONGODB_FIX.md)
+  - The app now continues running even if MongoDB fails, but you should fix the connection
 
 ### Mixed content errors
 
@@ -83,4 +100,5 @@ Then redeploy using the blueprint.
 - [ ] Both services redeployed after setting environment variables
 - [ ] No trailing slashes in URLs
 - [ ] Both URLs use HTTPS (not HTTP)
+
 

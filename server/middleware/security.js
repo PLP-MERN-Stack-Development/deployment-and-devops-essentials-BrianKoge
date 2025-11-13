@@ -3,6 +3,14 @@
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 
+// Normalize CLIENT_URL for security headers
+const normalizeUrl = (url) => {
+  if (!url) return url;
+  return url.replace(/\/+$/, ''); // Remove trailing slashes
+};
+
+const CLIENT_URL = normalizeUrl(process.env.CLIENT_URL) || 'http://localhost:5173';
+
 // Security headers using helmet
 const securityHeaders = helmet({
   contentSecurityPolicy: {
@@ -11,7 +19,7 @@ const securityHeaders = helmet({
       styleSrc: ["'self'", "'unsafe-inline'"],
       scriptSrc: ["'self'"],
       imgSrc: ["'self'", 'data:', 'https:'],
-      connectSrc: ["'self'", process.env.CLIENT_URL || 'http://localhost:5173'],
+      connectSrc: ["'self'", CLIENT_URL],
     },
   },
   crossOriginEmbedderPolicy: false,

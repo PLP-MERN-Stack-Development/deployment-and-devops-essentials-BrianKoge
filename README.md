@@ -338,14 +338,22 @@ Common issues:
 - Frontend connecting to `localhost` instead of production backend
 - Backend CORS not allowing production frontend URL
 - Environment variables not set during build
+- Trailing slash mismatch in `CLIENT_URL`
+
+### MongoDB Connection Errors
+
+If you're seeing MongoDB connection errors (502 Bad Gateway), see [MONGODB_FIX.md](./MONGODB_FIX.md) for instructions on whitelisting Render's IP addresses in MongoDB Atlas.
+
+**Note**: The application will continue running without MongoDB (using in-memory storage), but you should fix the connection for production.
 
 ## 📞 Support
 
 For deployment issues, refer to:
 1. [DEPLOYMENT.md](./DEPLOYMENT.md) troubleshooting section
 2. [CORS_FIX.md](./CORS_FIX.md) for CORS-related issues
-3. Platform-specific documentation
-4. GitHub Issues
+3. [MONGODB_FIX.md](./MONGODB_FIX.md) for MongoDB connection issues
+4. Platform-specific documentation
+5. GitHub Issues
 
 ---
 
