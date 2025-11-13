@@ -80,7 +80,6 @@ The application is deployed and live on Render:
 │   ├── vercel.json       # Vercel configuration
 │   ├── netlify.toml      # Netlify configuration
 │   └── railway.json      # Railway configuration
-├── DEPLOYMENT.md         # Deployment guide
 └── README.md            # This file
 ```
 
@@ -174,12 +173,7 @@ This application is configured for deployment on multiple platforms:
 
 ### Detailed Deployment Guide
 
-See [DEPLOYMENT.md](./DEPLOYMENT.md) for comprehensive deployment instructions including:
-- MongoDB Atlas setup
-- Platform-specific deployment steps
-- Environment variable configuration
-- Custom domain setup
-- SSL/HTTPS configuration
+For deployment instructions, refer to the deployment configuration files in the `deployment/` directory and platform-specific documentation.
 
 ## 🔄 CI/CD Pipeline
 
@@ -213,7 +207,7 @@ The project includes GitHub Actions workflows for continuous integration and dep
 
 1. **Configure GitHub Secrets**
    - Go to repository Settings → Secrets and variables → Actions
-   - Add required secrets (see [DEPLOYMENT.md](./DEPLOYMENT.md))
+   - Add required secrets for your chosen deployment platform
 
 2. **Workflows run automatically**
    - CI runs on every push/PR
@@ -254,7 +248,6 @@ Response:
 
 ## 📚 Documentation
 
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Complete deployment guide
 - [ENV_TEMPLATE.md](./ENV_TEMPLATE.md) - Environment variables template
 - [Week7-Assignment.md](./Week7-Assignment.md) - Assignment requirements
 
@@ -332,28 +325,26 @@ MIT License - see LICENSE file for details
 
 ### CORS Errors
 
-If you're experiencing CORS errors after deployment, see [CORS_FIX.md](./CORS_FIX.md) for step-by-step instructions to fix environment variable configuration.
-
-Common issues:
-- Frontend connecting to `localhost` instead of production backend
-- Backend CORS not allowing production frontend URL
-- Environment variables not set during build
-- Trailing slash mismatch in `CLIENT_URL`
+Common issues and fixes:
+- **Frontend connecting to localhost**: Set `VITE_SOCKET_URL` environment variable in frontend build settings
+- **Backend CORS errors**: Set `CLIENT_URL` environment variable in backend (without trailing slash)
+- **Environment variables not working**: Vite variables must be set during build time, not runtime
+- **Trailing slash mismatch**: Ensure `CLIENT_URL` doesn't have a trailing slash
 
 ### MongoDB Connection Errors
 
-If you're seeing MongoDB connection errors (502 Bad Gateway), see [MONGODB_FIX.md](./MONGODB_FIX.md) for instructions on whitelisting Render's IP addresses in MongoDB Atlas.
-
-**Note**: The application will continue running without MongoDB (using in-memory storage), but you should fix the connection for production.
+If you're seeing MongoDB connection errors (502 Bad Gateway):
+- Whitelist Render's IP addresses in MongoDB Atlas (or use `0.0.0.0/0` for development)
+- Verify `MONGODB_URI` environment variable is set correctly
+- The application will continue running without MongoDB (using in-memory storage), but you should fix the connection for production
 
 ## 📞 Support
 
 For deployment issues, refer to:
-1. [DEPLOYMENT.md](./DEPLOYMENT.md) troubleshooting section
-2. [CORS_FIX.md](./CORS_FIX.md) for CORS-related issues
-3. [MONGODB_FIX.md](./MONGODB_FIX.md) for MongoDB connection issues
-4. Platform-specific documentation
-5. GitHub Issues
+1. Platform-specific documentation (Render, Vercel, Netlify, etc.)
+2. GitHub Issues
+3. Check environment variables are set correctly
+4. Review deployment logs for specific errors
 
 ---
 
