@@ -14,9 +14,18 @@ A full-stack real-time chat application built with MERN stack (MongoDB, Express,
 - Responsive design with Tailwind CSS
 - Production-ready with security, logging, and monitoring
 
+## 🌐 Live Demo
+
+The application is deployed and live on Render:
+
+- **Frontend**: [https://socket-io-c0jd.onrender.com/](https://socket-io-c0jd.onrender.com/)
+- **Backend**: [https://socket-io1.onrender.com](https://socket-io1.onrender.com)
+- **Health Check**: [https://socket-io1.onrender.com/health](https://socket-io1.onrender.com/health)
+
 ## 📋 Table of Contents
 
 - [Features](#-features)
+- [Live Demo](#-live-demo)
 - [Tech Stack](#-tech-stack)
 - [Project Structure](#-project-structure)
 - [Getting Started](#-getting-started)
@@ -142,6 +151,12 @@ See [ENV_TEMPLATE.md](./ENV_TEMPLATE.md) for complete environment variable setup
 - `VITE_NODE_ENV` - Environment
 
 ## 🚀 Deployment
+
+### Live Application
+
+- **Frontend**: [https://socket-io-c0jd.onrender.com/](https://socket-io-c0jd.onrender.com/)
+- **Backend**: [https://socket-io1.onrender.com](https://socket-io1.onrender.com)
+- **Health Check**: [https://socket-io1.onrender.com/health](https://socket-io1.onrender.com/health)
 
 ### Quick Deploy
 
